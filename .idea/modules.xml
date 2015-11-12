@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DrawerToolbarApp.iml" filepath="$PROJECT_DIR$/DrawerToolbarApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MaterialDesignExp.iml" filepath="$PROJECT_DIR$/MaterialDesignExp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

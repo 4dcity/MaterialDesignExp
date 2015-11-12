@@ -1,4 +1,4 @@
-package com.will.materialdesignexp;
+package com.will.materialdesignexp.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,41 +16,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.will.materialdesignexp.R;
+import com.will.materialdesignexp.fragment.RecyclerViewFragment;
+import com.will.materialdesignexp.fragment.TabFragment;
+import com.will.materialdesignexp.adapter.TabFragmentAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Toolbar toolBar;
+    ViewPager viewPager;
+    TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        toolBar = (Toolbar) findViewById(R.id.toolbar);
+        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        tabLayout= (TabLayout)findViewById(R.id.tabs);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        setSupportActionBar(toolBar);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        initFAB();
+        initDrawer();
+        initTabs();
 
+    }
 
-        ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
-
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+    private void initTabs() {
         List<String> tabList = new ArrayList<>();
         tabList.add("Tab1");
         tabList.add("Tab2");
@@ -61,19 +59,42 @@ public class MainActivity extends AppCompatActivity
         tabLayout.addTab(tabLayout.newTab().setText(tabList.get(2)));
 
         List<Fragment> fragmentList = new ArrayList<>();
-        for (int i = 0; i < tabList.size(); i++) {
+        for (int i = 0; i < 2; i++) {
             Fragment f1 = new TabFragment();
             Bundle bundle = new Bundle();
             bundle.putString("content", "This is fragment"+i);
             f1.setArguments(bundle);
             fragmentList.add(f1);
         }
+        Fragment f2 = new RecyclerViewFragment();
+        fragmentList.add(f2);
 
         TabFragmentAdapter fragmentAdapter = new TabFragmentAdapter(getSupportFragmentManager(), fragmentList, tabList);
         viewPager.setAdapter(fragmentAdapter);//给ViewPager设置适配器
         tabLayout.setupWithViewPager(viewPager);//将TabLayout和ViewPager关联起来。
         tabLayout.setTabsFromPagerAdapter(fragmentAdapter);//给Tabs设置适配器
+    }
 
+    private void initDrawer() {
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initFAB() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
